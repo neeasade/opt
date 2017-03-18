@@ -1,5 +1,5 @@
 /**
-*      Copyright (c) 2014, Broseph <dcat (at) iotek (dot) org>
+*      Copyright (c) 2017, neeasade <neeasade (at) gmail (dot) org>
 *
 *      Permission to use, copy, modify, and/or distribute this software for any
 *      purpose with or without fee is hereby granted, provided that the above
@@ -36,7 +36,7 @@ static void set2border  (xcb_window_t, int, int);
 static void
 usage (char *name)
 {
-	fprintf(stderr, "usage: %s <-I color> <-O color> <-i size> <-o size> [wid...]\n", name);
+	fprintf(stderr, "usage: %s -c <color> -s <size> [wid...]\n", name);
 	exit(1);
 }
 
@@ -46,9 +46,6 @@ xcb_window_t win;
 int color; 
 int size; 
 {
-	//if (os < 0 || oc < 0 || is < 0 || ic < 0)
-  //return;
-
 	uint32_t values[1];
 	short w, h, b;
 
@@ -105,7 +102,8 @@ int size;
 	xcb_poly_fill_rectangle(conn, pmap, gc, 2, regular);
 
   // todo here: transparent color
-  //uint8_t asdf = 0x99000000;
+
+  // transparent
 	values[0] = 0x00000000U;
 	//values[0] = 0x000000U;
 	xcb_change_gc(conn, gc, XCB_GC_FOREGROUND, values);
@@ -113,7 +111,6 @@ int size;
 
 	xcb_aux_sync(conn);
 
-	// do the thing:
 	values[0] = color;
 	xcb_change_gc(conn, gc, XCB_GC_FOREGROUND, values);
 	xcb_poly_fill_arc(conn, pmap, gc, 4, arcs);
@@ -131,24 +128,18 @@ int size;
 int
 main (int argc, char **argv)
 {
-	int oc,os,ic,is;
+	int color, size;
 
 	if (argc < 2)
 		usage(argv[0]);
 
-	oc = os = ic = is = -1;
+	color = size = -1;
 	ARGBEGIN {
-		case 'I':
-			ic = strtoul(EARGF(usage(argv0)), NULL, 16);
+		case 'c':
+			color = strtoul(EARGF(usage(argv0)), NULL, 16);
 			break;
-		case 'O':
-			oc = strtoul(EARGF(usage(argv0)), NULL, 16);
-			break;
-		case 'i':
-			is = strtoul(EARGF(usage(argv0)), NULL, 10);
-			break;
-		case 'o':
-			os = strtoul(EARGF(usage(argv0)), NULL, 10);
+		case 's':
+			size = strtoul(EARGF(usage(argv0)), NULL, 16);
 			break;
 		case 'h':
 			usage(argv0);
@@ -160,7 +151,7 @@ main (int argc, char **argv)
 
 	/* assume remaining arguments are windows */
 	while (*argv)
-		set2border(strtoul(*argv++, NULL, 16), oc, os);
+		set2border(strtoul(*argv++, NULL, 16), color, size);
 
 	xcb_aux_sync(conn);
 
