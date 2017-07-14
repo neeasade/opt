@@ -6,6 +6,7 @@ SRC =           \
 	chwb2.c \
 	chwbb.c \
 	chbr.c \
+	chbpresel.c \
 	wname.c \
 	xmmv.c  \
 	xmrs.c  \
