@@ -1,23 +1,14 @@
-wmutils' opt
+neeasade's border opt
 =============
 
-opt is at set of optional utilities meant to accompany
-[core](https://github.com/wmutils/core).
-
-Just as the core programs, each utility does one job
-and does it well, like dealing with window events or names.
+wmutils-like border programs.
 
 utilities
 ---------
 
-opt has less utilities than core, here is a little overview:
-
-* chwb2 - control two different window borders
-* chwbb - control 'bevel' style borders.
-* wew   - print window events
-* wname - print a window's name
-* xmmv  - move a window with the mouse
-* xmrs  - resize a window with the mouse
+* chwbb - make 'bevel' style borders
+* chwbr - make rounded borders on windows that already have 32-bit color depth
+* chbpresel - make preselection indications 
 
 For more information, refer to the programs manpages.
 

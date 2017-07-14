@@ -2,15 +2,9 @@ include config.mk
 
 HDR = arg.h util.h
 SRC =           \
-	wew.c   \
-	chwb2.c \
 	chwbb.c \
-	chbr.c \
-	chbpresel.c \
-	wname.c \
-	xmmv.c  \
-	xmrs.c  \
-	chwn.c
+	chbr.c  \
+	chbpresel.c 
 
 OBJ = $(SRC:.c=.o)
 BIN = $(SRC:.c=)
