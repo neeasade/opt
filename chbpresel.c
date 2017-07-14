@@ -78,7 +78,7 @@ int direction; /* direction tlbr - 1 2 3 4 */
 	};
 
 	xcb_rectangle_t down[] = {
-	  { 0, h + b + b, w + b + b, b},
+	  { 0, h, w + b + b, b},
 	  { w, h/2, b, h/2},
 	  { w+b, h/2, b, h/2}
 	};
@@ -94,7 +94,7 @@ int direction; /* direction tlbr - 1 2 3 4 */
 	xcb_change_gc(conn, gc, XCB_GC_FOREGROUND, values);
 
 	//int direction; /* direction tlbr - 1 2 3 4 */
-	switch(direction) 
+	switch(direction)
 	{
 		case 1: xcb_poly_fill_rectangle(conn, pmap, gc, 3, up); break;
 		case 2: xcb_poly_fill_rectangle(conn, pmap, gc, 3, left); break;
