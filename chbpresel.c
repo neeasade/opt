@@ -35,17 +35,17 @@ usage (char *name)
 }
 
 static void
-set2border (win, b, c, direction)
+set2border (win, c, C, direction)
 xcb_window_t win;
-int b; /* outer size  */
-int c; /* inner color */
+int c; /* back color */
+int C; /* forward color */
 int direction; /* direction tlbr - 1 2 3 4 */
 {
 	//if (os < 0 || oc < 0 || is < 0 || ic < 0)
 		//return;
 
 	uint32_t values[1];
-	short w, h;
+	short w, h, b;
 
 	xcb_get_geometry_reply_t *geom = xcb_get_geometry_reply(conn,
 			xcb_get_geometry(conn, win), NULL);
@@ -58,6 +58,7 @@ int direction; /* direction tlbr - 1 2 3 4 */
 
 	w = (short)geom->width;
 	h = (short)geom->height;
+	b = (short)geom->border_width;
 
 	xcb_rectangle_t left[] = {
 	  { w + b, 0, b, h +b + b },
@@ -90,16 +91,27 @@ int direction; /* direction tlbr - 1 2 3 4 */
 	xcb_gcontext_t gc = xcb_generate_id(conn);
 	xcb_create_gc(conn, gc, pmap, 0, NULL);
 
-	values[0] = c;
+	// focus direction
+	values[0] = C;
 	xcb_change_gc(conn, gc, XCB_GC_FOREGROUND, values);
-
-	//int direction; /* direction tlbr - 1 2 3 4 */
 	switch(direction)
 	{
 		case 1: xcb_poly_fill_rectangle(conn, pmap, gc, 3, up); break;
 		case 2: xcb_poly_fill_rectangle(conn, pmap, gc, 3, left); break;
 		case 3: xcb_poly_fill_rectangle(conn, pmap, gc, 3, down); break;
 		case 4: xcb_poly_fill_rectangle(conn, pmap, gc, 3, right); break;
+		default: break;
+	}
+
+	// behind
+	values[0] = c;
+	xcb_change_gc(conn, gc, XCB_GC_FOREGROUND, values);
+	switch(direction)
+	{
+		case 1: xcb_poly_fill_rectangle(conn, pmap, gc, 3, down); break;
+		case 2: xcb_poly_fill_rectangle(conn, pmap, gc, 3, right); break;
+		case 3: xcb_poly_fill_rectangle(conn, pmap, gc, 3, up); break;
+		case 4: xcb_poly_fill_rectangle(conn, pmap, gc, 3, left); break;
 		default: break;
 	}
 
@@ -113,18 +125,18 @@ int direction; /* direction tlbr - 1 2 3 4 */
 int
 main (int argc, char **argv)
 {
-	int c, d, b;
+	int C, c, d;
 
 	if (argc < 2)
 		usage(argv[0]);
 
-	c = d = b = -1;
+	C = c = d = -1;
 	ARGBEGIN {
+		case 'C':
+			C = strtoul(EARGF(usage(argv0)), NULL, 16);
+			break;
 		case 'c':
 			c = strtoul(EARGF(usage(argv0)), NULL, 16);
-			break;
-		case 'b':
-			b = strtoul(EARGF(usage(argv0)), NULL, 10);
 			break;
 		case 'd':
 			d = strtoul(EARGF(usage(argv0)), NULL, 10);
@@ -139,7 +151,7 @@ main (int argc, char **argv)
 
 	/* assume remaining arguments are windows */
 	while (*argv)
-		set2border(strtoul(*argv++, NULL, 16), b, c, d);
+		set2border(strtoul(*argv++, NULL, 16), c, C, d);
 
 	xcb_aux_sync(conn);
 
