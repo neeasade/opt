@@ -97,7 +97,6 @@ set_border(xcb_window_t win)
 	    cbw = borders[i];
 	    if (cbw != -1)
 	      {
-		printf("drawing %i", cbw);
 		values[0] = colors[i];
 
 		get_rectangles(rectangles, offset, cbw, bw, h, w);
@@ -157,8 +156,6 @@ main(int argc, char **argv)
 		case 'b':
 		  temp = strtoul(EARGF(usage(argv0)), NULL, 10);
 		  border_width += temp;
-
-		  printf("border_width %i\n", border_width);
 
 		  borders[border_index++] = temp;
 		  break;
