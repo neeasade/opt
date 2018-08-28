@@ -9,13 +9,24 @@ utilities
 * chwbb - make 'bevel' style borders
 * chwbr - make rounded borders on windows that already have 32-bit color depth
 * chbpresel - make preselection indications 
+* chwbn - give infinite borders to programs
 
 For more information, refer to the programs manpages.
 
-dependencies
-------------
+reference
+---------
 
-Like core, opt depends only on the XCB library.
+```
++=================+====+----+
+#   Client area,  | ri # le |
+#    invisible    | gh # ft |
+#                 | t  #    |
++-----------------+----+----+
+#  bottom border  | br # bl |
++=================+====+----+
+|   top border    | tr | tl |
++-----------------+----+----+
+```
 
 license
 -------
